@@ -22,7 +22,11 @@ namespace TomatoGrowth
             STREAM = new InputOutputTextbox();
             ((InputOutputTextbox)STREAM).Connect(richTextBoxLogs);
         }
-
+        private void buttonTick_Click(object sender, EventArgs e)
+        {
+            currentPlant.tickPlant();
+            currentPlant.drowPlant();
+        }
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             try
@@ -57,15 +61,43 @@ namespace TomatoGrowth
                 {
                     vegetation = double.Parse(textBoxVegetation.Text) / 100;
                 }
-                
+
+                double curly = 0;
+                if (!string.IsNullOrWhiteSpace(textBoxCurly.Text))
+                {
+                    curly = double.Parse(textBoxCurly.Text) / 100;
+                }
+
+                double slimness = 0;
+                if (!string.IsNullOrWhiteSpace(textBoxSlimness.Text))
+                {
+                    slimness = double.Parse(textBoxSlimness.Text) / 100;
+                }
+
+                double fade = 0;
+                if (!string.IsNullOrWhiteSpace(textBoxFade.Text))
+                {
+                    fade = double.Parse(textBoxFade.Text) / 100;
+                }
+                double branches = 0;
+                if (!string.IsNullOrWhiteSpace(textBoxBranches.Text))
+                {
+                    branches = double.Parse(textBoxBranches.Text);
+                }
                 STREAM.WriteLine($"MaxLen: {maxLen}");
                 STREAM.WriteLine($"Bushiness: {bushiness}");
                 STREAM.WriteLine($"DyingOff: {dyingOff}");
                 STREAM.WriteLine($"Youth: {youth}");
                 STREAM.WriteLine($"Vegetation: {vegetation}");
+                STREAM.WriteLine($"Curly: {curly}");
+                STREAM.WriteLine($"Slimness: {slimness}");
+                STREAM.WriteLine($"Fade: {fade}");
+                STREAM.WriteLine($"Branches: {branches}");
 
-                currentPlant = new Plant(maxLen, bushiness, dyingOff, youth, vegetation);
+                Plant.connect(STREAM);
 
+                currentPlant = new Plant(pictureBox1, maxLen, bushiness, dyingOff, youth, vegetation, curly, slimness, fade, branches);
+                currentPlant.firatTickPlant();
             }
             catch (FormatException ex)
             {
@@ -86,7 +118,7 @@ namespace TomatoGrowth
 
 
     }
-    interface InputOutputStream
+    public interface InputOutputStream
     {
         string ReadLine(); 
         void WriteLine(string line);
@@ -104,6 +136,8 @@ namespace TomatoGrowth
         void InputOutputStream.WriteLine(string line)
         {
             console.AppendText(line + Environment.NewLine);
+            console.ScrollToCaret();
+
         }
         public void Connect(RichTextBox consoleTextBox)
         {

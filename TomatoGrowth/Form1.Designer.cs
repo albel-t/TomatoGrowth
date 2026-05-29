@@ -49,6 +49,16 @@
             this.textBoxCurly = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBoxFade = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxSlimness = new System.Windows.Forms.TextBox();
+            this.buttonTick = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBoxBranches = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,7 +66,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(450, 450);
+            this.pictureBox1.Size = new System.Drawing.Size(450, 639);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -92,11 +102,11 @@
             this.textBoxBushiness.Name = "textBoxBushiness";
             this.textBoxBushiness.Size = new System.Drawing.Size(48, 20);
             this.textBoxBushiness.TabIndex = 3;
-            this.textBoxBushiness.Text = "30";
+            this.textBoxBushiness.Text = "20";
             // 
             // buttonGenerate
             // 
-            this.buttonGenerate.Location = new System.Drawing.Point(797, 59);
+            this.buttonGenerate.Location = new System.Drawing.Point(746, 30);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(75, 23);
             this.buttonGenerate.TabIndex = 5;
@@ -153,7 +163,7 @@
             this.textBoxVegetation.Name = "textBoxVegetation";
             this.textBoxVegetation.Size = new System.Drawing.Size(48, 20);
             this.textBoxVegetation.TabIndex = 10;
-            this.textBoxVegetation.Text = "80";
+            this.textBoxVegetation.Text = "45";
             // 
             // label6
             // 
@@ -202,7 +212,7 @@
             // 
             // richTextBoxLogs
             // 
-            this.richTextBoxLogs.Location = new System.Drawing.Point(513, 248);
+            this.richTextBoxLogs.Location = new System.Drawing.Point(513, 437);
             this.richTextBoxLogs.Name = "richTextBoxLogs";
             this.richTextBoxLogs.Size = new System.Drawing.Size(433, 214);
             this.richTextBoxLogs.TabIndex = 17;
@@ -234,11 +244,108 @@
             this.label12.TabIndex = 16;
             this.label12.Text = "%";
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(878, 125);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(15, 13);
+            this.label13.TabIndex = 20;
+            this.label13.Text = "%";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(758, 125);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 19;
+            this.label14.Text = "Fade";
+            // 
+            // textBoxFade
+            // 
+            this.textBoxFade.Location = new System.Drawing.Point(824, 122);
+            this.textBoxFade.Name = "textBoxFade";
+            this.textBoxFade.Size = new System.Drawing.Size(48, 20);
+            this.textBoxFade.TabIndex = 18;
+            this.textBoxFade.Text = "10";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(878, 166);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(15, 13);
+            this.label15.TabIndex = 23;
+            this.label15.Text = "%";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(758, 166);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(48, 13);
+            this.label16.TabIndex = 22;
+            this.label16.Text = "Slimness";
+            // 
+            // textBoxSlimness
+            // 
+            this.textBoxSlimness.Location = new System.Drawing.Point(824, 163);
+            this.textBoxSlimness.Name = "textBoxSlimness";
+            this.textBoxSlimness.Size = new System.Drawing.Size(48, 20);
+            this.textBoxSlimness.TabIndex = 21;
+            this.textBoxSlimness.Text = "70";
+            // 
+            // buttonTick
+            // 
+            this.buttonTick.Location = new System.Drawing.Point(843, 30);
+            this.buttonTick.Name = "buttonTick";
+            this.buttonTick.Size = new System.Drawing.Size(75, 23);
+            this.buttonTick.TabIndex = 5;
+            this.buttonTick.Text = "Tick";
+            this.buttonTick.UseVisualStyleBackColor = true;
+            this.buttonTick.Click += new System.EventHandler(this.buttonTick_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(878, 86);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(51, 13);
+            this.label17.TabIndex = 26;
+            this.label17.Text = "branches";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(758, 86);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(52, 13);
+            this.label18.TabIndex = 25;
+            this.label18.Text = "Branches";
+            // 
+            // textBoxBranches
+            // 
+            this.textBoxBranches.Location = new System.Drawing.Point(824, 83);
+            this.textBoxBranches.Name = "textBoxBranches";
+            this.textBoxBranches.Size = new System.Drawing.Size(48, 20);
+            this.textBoxBranches.TabIndex = 24;
+            this.textBoxBranches.Text = "2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(958, 471);
+            this.ClientSize = new System.Drawing.Size(965, 663);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.textBoxBranches);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.textBoxSlimness);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.textBoxFade);
             this.Controls.Add(this.richTextBoxLogs);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label10);
@@ -254,6 +361,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxCurly);
             this.Controls.Add(this.textBoxDyingOff);
+            this.Controls.Add(this.buttonTick);
             this.Controls.Add(this.buttonGenerate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxBushiness);
@@ -291,6 +399,16 @@
         private System.Windows.Forms.TextBox textBoxCurly;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxFade;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox textBoxSlimness;
+        private System.Windows.Forms.Button buttonTick;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBoxBranches;
     }
 }
 
