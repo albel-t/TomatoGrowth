@@ -65,7 +65,7 @@ namespace TomatoGrowth
             
             bmp = new Bitmap(thisPictureBox.Width, thisPictureBox.Height);
 
-            root = new part_of_a_plant(new Vec2d(0, -10));
+            root = new part_of_a_plant(new Vec2d(0, -30));
 
         }
         public static void connect(InputOutputStream stream)

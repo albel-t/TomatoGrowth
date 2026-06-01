@@ -63,9 +63,9 @@ namespace TomatoGrowth
                 }
 
                 double curly = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxCurly.Text))
+                if (!string.IsNullOrWhiteSpace(textBoxCurlyMin.Text))
                 {
-                    curly = double.Parse(textBoxCurly.Text) / 100;
+                    curly = double.Parse(textBoxCurlyMin.Text) / 100;
                 }
 
                 double slimness = 0;
@@ -115,7 +115,6 @@ namespace TomatoGrowth
                                 MessageBoxIcon.Error);
             }
         }
-
 
     }
     public interface InputOutputStream
