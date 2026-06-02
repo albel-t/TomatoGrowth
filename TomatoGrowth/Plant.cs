@@ -16,80 +16,97 @@ namespace TomatoGrowth
     {
         public static InputOutputStream stream;
         public part_of_a_plant root;
-        public static double MaxLen;            //максимальное количество ступеней
-        public static double Bushiness;         //желание отпускать боковые ветки
-        public static double DyingOff;          //старение
-        public static double Youth;             //молодость
-        public static double Vegetation;        //желание рости
-
-        public static double Curly;             //кривость новых веток
-        public static double Slimness;          //желание расти к свету
-        public static double Fade;              //желание умереть
-        public static double Branches;          //количество веток из 1 почки
+        public static PlantParams Gens;  // Только это статическое
 
         public static Random rand;
-
         public static int tick;
         public static Vec2d sun;
         public static Bitmap bmp;
         public static System.Windows.Forms.PictureBox thisPictureBox;
         public static Pen pen;
+
+        public static PlantTag tag_none         ;
+        public static PlantTag tag_active       ;
+        public static PlantTag tag_passive      ;
+        public static PlantTag tag_dead         ;
+        public static PlantTag tag_original     ;
+        public static PlantTag tag_fallen       ;
+        public static PlantTag tag_supported    ;
+        public static PlantTag tag_master       ;
+        public static PlantTag tag_slave        ;
+        public static PlantTag tag_fixed        ;
+
+        public static PlantTagGroup phase;
+        public static PlantTagGroup position;
+        public static PlantTagGroup priority;
+
+
         public Plant()
         { }
-        public Plant(
-            System.Windows.Forms.PictureBox thisPictureBox, 
-            double MaxLen,
-            double Bushiness,
-            double DyingOff,
-            double Youth,
-            double Vegetation,
-            double Curly,
-            double Slimness,
-            double Fade,
-            double Branches)
+
+        public Plant(System.Windows.Forms.PictureBox thisPictureBox, PlantParams p)
         {
-            Plant.MaxLen = MaxLen;
-            Plant.Bushiness = Bushiness;
-            Plant.DyingOff = DyingOff;
-            Plant.Youth = Youth;
-            Plant.Vegetation = Vegetation;
-            Plant.Curly = Curly;
-            Plant.Slimness = Slimness;
-            Plant.Fade = Fade;
-            Plant.Branches = Branches;
+            Gens = p;
 
             Plant.thisPictureBox = thisPictureBox;
-
             sun = new Vec2d(200, -5000);
-            rand = new Random();            
-            
+            rand = new Random();
             bmp = new Bitmap(thisPictureBox.Width, thisPictureBox.Height);
 
             root = new part_of_a_plant(new Vec2d(0, -30));
 
+            tag_none        = new PlantTag("none");
+            tag_active      = new PlantTag("active");
+            tag_passive     = new PlantTag("passive");
+            tag_dead        = new PlantTag("dead");
+            tag_original    = new PlantTag("original");
+            tag_fallen      = new PlantTag("fallen");
+            tag_supported   = new PlantTag("supported");
+            tag_master      = new PlantTag("master");
+            tag_slave       = new PlantTag("slave");
+            tag_fixed       = new PlantTag("fixed");
+
+            phase = new PlantTagGroup("phase");
+            phase.Add(tag_none   );
+            phase.Add(tag_active );
+            phase.Add(tag_passive);
+            phase.Add(tag_dead   );
+
+            position = new PlantTagGroup("position");
+            position.Add(tag_original );
+            position.Add(tag_fallen   );
+            position.Add(tag_supported);
+
+            priority = new PlantTagGroup("priority");
+            priority.Add(tag_master);
+            priority.Add(tag_slave );
+            priority.Add(tag_fixed );
+
         }
+
         public static void connect(InputOutputStream stream)
         {
             Plant.stream = stream;
             stream.WriteLine("{Plant} - connected to stream");
         }
+
         public static bool RandomChance(double percent)
         {
-
-            double randomValue = rand.NextDouble();// * 100;
-
+            double randomValue = rand.NextDouble();
             return randomValue < percent;
         }
+
         public void tickPlant()
         {
             root.oneTick(1);
         }
+
         public void firatTickPlant()
         {
             root.born("A");
-            stream.WriteLine("root   was born");
-
+            stream.WriteLine("root was born");
         }
+
         public void drowPlant()
         {
             stream.WriteLine($"tick {root.old}");
@@ -98,14 +115,14 @@ namespace TomatoGrowth
                 g.Clear(Color.White);
             }
             root.drow(new Vec2d(200, 500));
-
             thisPictureBox.Image = bmp;
         }
+
         public static void DrawLine(Vec2d start, Vec2d stop, int color, double width = 0)
         {
             using (Graphics g = Graphics.FromImage(bmp))
             {
-                switch(color)
+                switch (color)
                 {
                     case 0:
                         pen = new Pen(Color.LightGreen, (float)(3 + width));
@@ -113,131 +130,327 @@ namespace TomatoGrowth
                     case 1:
                         pen = new Pen(Color.Green, (float)(3 + width));
                         break;
-
                     case 2:
                         pen = new Pen(Color.Brown, (float)(3 + width));
                         break;
-
                 }
                 g.DrawLine(pen, (float)start.x, (float)start.y, (float)stop.x, (float)stop.y);
-
             }
         }
     }
-    public class part_of_a_plant : Plant
-    {
 
+    public class part_of_a_plant : Plant, TagableType
+    {
         part_of_a_plant mainKid;
         List<part_of_a_plant> kids;
         public int old;
         public string status;   // none active passive dead
         public string ID;       // 0-9 - main, a-z - slave
         public Vec2d end;
+        public PlantTagManager myTags;
         public part_of_a_plant(Vec2d parent_end) : base()
         {
             old = 0;
-
-            status = "none";
+            myTags = new PlantTagManager();
+            myTags.Add(tag_none);
             end = new Vec2d(parent_end);
-            end.RotateVector(rand.NextDouble() * Curly * 140 * (RandomChance(Slimness) ? end.GetSide(sun) : -end.GetSide(sun)));
+
+
         }
+
         public void born(string ID)
         {
+            if (myTags.Contains(tag_master))
+            {
+                double curly = Gens.gr.Deviation * rand.NextDouble();
+                double side = end.GetSide(sun);
+                double slimnessFactor = RandomChance(Gens.gr.Slimness) ? side : -side;
+                end.RotateVector(curly * 140 * slimnessFactor);
+            }
+            else if(myTags.Contains(tag_slave))
+            {
+                double curly = Gens.gr.CurlyMin + (Gens.gr.CurlyMax - Gens.gr.CurlyMin) * rand.NextDouble();
+                double side = end.GetSide(sun);
+                double slimnessFactor = RandomChance(Gens.gr.Slimness) ? side : -side;
+                end.RotateVector(curly * 140 * slimnessFactor);
+            }
+
+            end = end.Normalize();
+            end = end * (Gens.gr.StepMinLen + (Gens.gr.StepMaxLen - Gens.gr.StepMinLen) * rand.NextDouble());
+
             this.ID = ID;
             kids = new List<part_of_a_plant>();
             mainKid = new part_of_a_plant(new Vec2d(end));
-            status = "active";
+
+            mainKid.myTags.Switch(tag_master, priority);
+
+            myTags.Switch(tag_active, phase);
+        }
+        public void Fall(int len)
+        {
+            double t = (double)(len - 1) / (Gens.gr.MaxLen - 1);
+            double exponent = 1.0 / (Gens.gr.Weight * 1.2 + 0.4);
+            double curve = Math.Pow(t, exponent);
+            double value = -Gens.gr.Plasticity + curve * (Gens.gr.Plasticity * 0.55 + Gens.gr.Plasticity);
+            value = Math.Round(value, 3);
+
+            double side = end.GetSide(sun);
+
+            end.RotateVector(side * 140 * value);
 
         }
         public void die()
         {
-            if (this.status == "none")
-            {
-                //stream.WriteLine($"status none");
+            if (myTags.Contains(tag_none))
                 return;
-            }
-            //stream.WriteLine($"status die");
 
-            mainKid.die();
+            if (mainKid != null)
+                mainKid.die();
+
+            if (kids != null)
+            {
                 foreach (var kid in kids)
                     kid.die();
-                status = "dead";
-            if (status == "dead")
-            {
-                stream.WriteLine($"branch {ID} is dead");
             }
 
+            myTags.Switch(tag_dead, phase);
+
+
+            if (myTags.Contains(tag_dead))
+            {
+                //stream.WriteLine($"branch {ID} is dead");
+            }
+        }
+        public void Apply(PlantTag GlobalTag, bool AddDel = true)
+        {
+            if (AddDel) // add
+            {
+                myTags.Add(GlobalTag);
+            }
+            else//del
+            {
+                myTags.Delete(GlobalTag);
+            }
+            if (kids != null)
+            {
+                mainKid.Apply(GlobalTag, AddDel);
+                foreach (var kid in kids)
+                    kid.Apply(GlobalTag, AddDel);
+            }
         }
         public void drow(Vec2d parentDot)
         {
-            //DrawLine(new Vec2d(0, 0), new Vec2d(200, 200), 0);
             Vec2d myDot = parentDot + (end + Math.Pow(old, 0.75));
-            //stream.WriteLine($"parentDot {parentDot} myDot {myDot}");
 
-            if (status != "none")
+            if (! myTags.Contains(tag_none))
             {
-                DrawLine(parentDot, myDot, (status == "active") ? 0 : ((status == "passive") ? 1 : 2), Math.Sqrt(old) );
+                DrawLine(parentDot, myDot, myTags.Contains(tag_active) ? 0 : (myTags.Contains(tag_passive) ? 1 : 2), Math.Sqrt(old));
 
-                mainKid.drow(myDot);
-                foreach (var kid in kids)
-                    kid.drow(myDot);
+                if (mainKid != null)
+                    mainKid.drow(myDot);
+
+                if (kids != null)
+                {
+                    foreach (var kid in kids)
+                        kid.drow(myDot);
+                }
             }
         }
+
         public void oneTick(int len)
         {
-
-            if ((len == MaxLen) || (status == "none") || (status == "dead"))
+            if ((len == Gens.gr.MaxLen) || myTags.Contains(tag_none) || myTags.Contains(tag_dead))
                 return;
+
             len++;
             old++;
-            if (old == Youth)
-                status = "active";
-            if (old == DyingOff)
-                status = "passive";
 
-            if (len == MaxLen)
+            if (old == Gens.gr.Youth)
+                myTags.Switch(tag_active, phase);
+
+            if (old == Gens.gr.DyingOff)
+                myTags.Switch(tag_passive, phase);
+
+
+            if (len == Gens.gr.MaxLen)
             {
-                stream.WriteLine($"branch {ID} is finished");
+                //stream.WriteLine($"branch {ID} is finished");
             }
-
             else
             {
-                if(status == "active")
-                {                
-                    mainKid.oneTick(len);
-                    foreach (var kid in kids)
-                        kid.oneTick(len);
-                    //stream.WriteLine($"try Vegetation {Vegetation}, mainKid.status == {mainKid.status}");
+                if (myTags.Contains(tag_active))
+                {
+                    if (mainKid != null)
+                        mainKid.oneTick(len);
 
-                    if (RandomChance(Vegetation) && (mainKid.status == "none"))
+                    if (kids != null)
                     {
-                        //mainKid.status = "active";
+                        foreach (var kid in kids)
+                            kid.oneTick(len);
+                    }
+
+                    if (RandomChance(Gens.gr.Vegetation) && (mainKid != null && mainKid.myTags.Contains(tag_none)))
+                    {
                         mainKid.born(ID + "A");
                     }
-                    if (RandomChance(Bushiness) && (kids.Count() <= Branches))
+
+                    if (RandomChance(Gens.gr.Bushiness) && (kids != null && kids.Count < Gens.gr.Branches))
                     {
                         part_of_a_plant newKid = new part_of_a_plant(end);
-                        newKid.status = "active";
-                        newKid.born(ID + (ID[ID.Length - 1] + 1));
+
+                        newKid.myTags.Switch(tag_slave, priority);
+                        newKid.myTags.Switch(tag_active, phase);
+
+                        char lastChar = ID[ID.Length - 1];
+                        newKid.born(ID + (char)(lastChar + 1));
                         kids.Add(newKid);
                     }
+                    if (RandomChance(Gens.gr.Fall))
+                    {
+                        Apply(tag_fallen);
+                    }
                 }
-                if (status == "passive")
+
+                if (myTags.Contains(tag_passive))
                 {
-                    mainKid.oneTick(len);
-                    foreach (var kid in kids)
-                        kid.oneTick(len);
+                    if (mainKid != null)
+                        mainKid.oneTick(len);
 
-                    foreach (var kid in kids)
-                        if (RandomChance(Fade))
-                            kid.die();
+                    if (kids != null)
+                    {
+                        foreach (var kid in kids)
+                            kid.oneTick(len);
+
+                        foreach (var kid in kids)
+                            if (RandomChance(Gens.gr.Fade))
+                                kid.die();
+                    }
                 }
+                if (myTags.Contains(tag_fallen))
+                {
+                    if((end.Normalize() * new Vec2d(0, -1) >= 0.97)||(end.Normalize() * new Vec2d(0, -1) <= -0.97))
+                    {
+                        Apply(tag_fallen, false);
+                        Apply(tag_fixed);
+                    }
+                    else 
+                    {
+                        Fall(len);
+                    }
+                }
+            }
+        }
+    }
 
+    public interface TagableType
+    {
+        void Apply(PlantTag GlobalTag, bool AddDel = true);
+    }
 
+    public struct PlantTagGroup
+    {
+        public string Group;
+        public List<PlantTag> tags;
+        public PlantTagGroup(string group)
+        {
+            this.Group = group;
+            tags = new List<PlantTag>();
+        }
+        public PlantTagGroup(PlantTagGroup other)
+        {
+            tags = new List<PlantTag>(other.tags);
+            Group = other.Group;
+        }
+        public void Add(PlantTag newTag)
+        {
+            if (!tags.Contains(newTag))
+            {
+                tags.Add(newTag);
+            }
+        }
+        public void Import(string group, PlantTagManager other)
+        {
+            tags = new List<PlantTag>(other.tags);
+            Group = group;
+        }
+    }
+
+    public struct PlantTag
+    {
+        public string Name;
+        public PlantTag(string name)
+        {
+            Name = name;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is PlantTag other)
+            {
+                return Name == other.Name;
+            }
+            return false;
+        }
+    }
+
+    public class PlantTagManager
+    {
+        public List<PlantTag> tags;
+
+        public PlantTagManager() 
+        {
+            tags = new List<PlantTag>();
+        }
+        public PlantTagManager(PlantTagManager other)
+        {
+            tags = new List<PlantTag>(other.tags);
+        }
+
+        public void Add(PlantTag newTag) 
+        {
+            if (!tags.Contains(newTag))
+            {
+                tags.Add(newTag);
             }
         }
 
+        public void Delete(PlantTag newTag)
+        {
+            if (tags.Contains(newTag))
+            {
+                tags.Remove(newTag);
+            }
+        }
+        public void Switch(PlantTag newTag, PlantTagGroup newTags)
+        {
+            Delete(newTags);
+            Add(newTag);
+        }
+        public void Delete(PlantTagGroup newTags)
+        {
+            foreach (var newTag in newTags.tags) {
+                if (tags.Contains(newTag))
+                {
+                    tags.Remove(newTag);
+                } 
+            }
+        }
 
+        public void Remove(PlantTag tag)
+        {
+            tags.Remove(tag);  
+        }
+
+        public bool Contains(PlantTag tag)
+        {
+            return tags.Contains(tag);
+        }
+
+        public void Clear()
+        {
+            tags.Clear();
+        }
+
+        public int Count => tags.Count;
     }
 
     public class Vec2d
@@ -261,8 +474,6 @@ namespace TomatoGrowth
         {
             return Math.Sqrt(x * x + y * y);
         }
-
-        // Метод для нормализации вектора
         public Vec2d Normalize()
         {
             double len = Length();
@@ -314,7 +525,10 @@ namespace TomatoGrowth
         {
             return new Vec2d(v.x * scalar, v.y * scalar);
         }
-
+        public static double operator *(Vec2d a, Vec2d b)
+        {
+            return a.x * b.x + a.y * b.y;
+        }
         public static Vec2d operator /(Vec2d v, double scalar)
         {
             return new Vec2d(v.x / scalar, v.y / scalar);
@@ -326,14 +540,11 @@ namespace TomatoGrowth
             double len = v.Length();
             if (len == 0) return new Vec2d(0, 0);
 
-            // Сохраняем направление, увеличиваем длину
             double newLen = len + scalar;
             double scale = newLen / len;
 
             return new Vec2d(v.x * scale, v.y * scale);
         }
-
-        // Оператор: число + вектор (симметричная операция)
         public static Vec2d operator +(double scalar, Vec2d v)
         {
             return v + scalar;

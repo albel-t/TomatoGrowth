@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace TomatoGrowth
 {
@@ -31,72 +33,43 @@ namespace TomatoGrowth
         {
             try
             {
+                PlantParams p = new PlantParams
+                {
+                    visual = new PP_visual
+                    {
+                        StepX = GetFromTextBox<int>(textBoxStepX),
+                        StepY = GetFromTextBox<int>(textBoxStepY)
+                    },
+                    gr = new PP_growing
+                    {
+                        MaxLen = GetFromTextBox<int>(textBoxMaxLen),
+                        DyingOff = GetFromTextBox<int>(textBoxDyingOff),
+                        Youth = GetFromTextBox<int>(textBoxYouth),
+                        Branches = GetFromTextBox<int>(textBoxBranches),
 
-                int maxLen = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxMaxLen.Text))
-                {
-                    maxLen = int.Parse(textBoxMaxLen.Text);
-                }
+                        StepMaxLen = GetFromTextBox<int>(textBoxStepMaxLen),
+                        StepMinLen = GetFromTextBox<int>(textBoxStepMinLen),
 
-                double bushiness = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxBushiness.Text))
-                {
-                    bushiness = double.Parse(textBoxBushiness.Text) / 100;
-                }
+                        Bushiness = GetFromTextBox<double>(textBoxBushiness, true),
+                        Vegetation = GetFromTextBox<double>(textBoxVegetation, true),
+                        Slimness = GetFromTextBox<double>(textBoxSlimness, true),
+                        Fade = GetFromTextBox<double>(textBoxFade, true),
+                        CurlyMin = GetFromTextBox<double>(textBoxCurlyMin, true),
+                        CurlyMax = GetFromTextBox<double>(textBoxCurlyMax, true),
 
-                double dyingOff = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxDyingOff.Text))
-                {
-                    dyingOff = double.Parse(textBoxDyingOff.Text);
-                }
+                        Weight = GetFromTextBox<double>(textBoxWeight, true),
+                        Fall = GetFromTextBox<double>(textBoxFall, true),
+                        Plasticity = GetFromTextBox<double>(textBoxPlasticity, true),
+                        Deviation = GetFromTextBox<double>(textBoxDeviation, true)
 
-                double youth = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxYouth.Text))
-                {
-                    youth = double.Parse(textBoxYouth.Text);
-                }
+                    }
+                };
 
-                double vegetation = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxVegetation.Text))
-                {
-                    vegetation = double.Parse(textBoxVegetation.Text) / 100;
-                }
-
-                double curly = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxCurlyMin.Text))
-                {
-                    curly = double.Parse(textBoxCurlyMin.Text) / 100;
-                }
-
-                double slimness = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxSlimness.Text))
-                {
-                    slimness = double.Parse(textBoxSlimness.Text) / 100;
-                }
-
-                double fade = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxFade.Text))
-                {
-                    fade = double.Parse(textBoxFade.Text) / 100;
-                }
-                double branches = 0;
-                if (!string.IsNullOrWhiteSpace(textBoxBranches.Text))
-                {
-                    branches = double.Parse(textBoxBranches.Text);
-                }
-                STREAM.WriteLine($"MaxLen: {maxLen}");
-                STREAM.WriteLine($"Bushiness: {bushiness}");
-                STREAM.WriteLine($"DyingOff: {dyingOff}");
-                STREAM.WriteLine($"Youth: {youth}");
-                STREAM.WriteLine($"Vegetation: {vegetation}");
-                STREAM.WriteLine($"Curly: {curly}");
-                STREAM.WriteLine($"Slimness: {slimness}");
-                STREAM.WriteLine($"Fade: {fade}");
-                STREAM.WriteLine($"Branches: {branches}");
+                STREAM.WriteLine($"{p}");
 
                 Plant.connect(STREAM);
 
-                currentPlant = new Plant(pictureBox1, maxLen, bushiness, dyingOff, youth, vegetation, curly, slimness, fade, branches);
+                currentPlant = new Plant(pictureBox1, p);
                 currentPlant.firatTickPlant();
             }
             catch (FormatException ex)
@@ -116,6 +89,71 @@ namespace TomatoGrowth
             }
         }
 
+        public T GetFromTextBox<T>(System.Windows.Forms.TextBox textBox, bool percent = false) where T : struct
+        {
+            if (textBox == null || string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                STREAM.WriteLine($"GetFromTextBox - fail");
+
+                return default(T);
+            }
+
+            Type targetType = typeof(T);
+
+            if (targetType == typeof(double))
+            {
+                double value = double.Parse(textBox.Text) / (percent ? 100 : 1);
+                return (T)(object)value;
+            }
+            else if (targetType == typeof(int))
+            {
+                double value = double.Parse(textBox.Text) / (percent ? 100 : 1);
+                int intValue = (int)Math.Round(value);
+                return (T)(object)intValue;
+            }
+            else if (targetType == typeof(float))
+            {
+                float value = float.Parse(textBox.Text) / (percent ? 100 : 1);
+                return (T)(object)value;
+            }
+            else
+            {
+                throw new NotSupportedException($"Тип {targetType} не поддерживается");
+            }
+        }
+
+
+    }
+    public struct PlantParams
+    {
+        public PP_visual visual;
+        public PP_growing gr;
+        public override string ToString()
+        {
+            return $"Visual: [{visual}], \nGrowing: [{gr}]";
+        }
+    }       
+    public struct PP_visual
+    {
+        public int StepX, StepY;
+        public override string ToString()
+        {
+            return $"StepX: {StepX}, StepY: {StepY}";
+        }
+    } 
+    public struct PP_growing
+    {
+        public int MaxLen, DyingOff, Youth, Branches;
+        public int StepMaxLen, StepMinLen;
+        public double Bushiness, Vegetation, Slimness, Fade, CurlyMax, CurlyMin, Weight, Fall, Plasticity, Deviation;
+        public override string ToString()
+        {
+            return $"MaxLen: {MaxLen},\n DyingOff: {DyingOff},\n Youth: {Youth},\n Branches: {Branches},\n - \n " +
+                   $"StepMaxLen: {StepMaxLen},\n StepMinLen: {StepMinLen},\n - \n " +
+                   $"Bushiness: {Bushiness:F2},\n Vegetation: {Vegetation:F2},\n Slimness: {Slimness:F2},\n " +
+                   $"Fade: {Fade:F2},\n CurlyMin: {CurlyMin:F2},\n CurlyMax: {CurlyMax:F2}, \n " +
+                   $"Weight: {Weight:F2},\n Fall: {Fall:F2},\n Plasticity: {Plasticity:F2},\n Deviation: {Deviation:F2}";
+        }
     }
     public interface InputOutputStream
     {

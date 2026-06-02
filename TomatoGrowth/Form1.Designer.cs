@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TextBox textBoxCurlyMin;
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBoxMaxLen = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -72,23 +71,27 @@
             this.textBoxStepMinLen = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
-            textBoxCurlyMin = new System.Windows.Forms.TextBox();
+            this.textBoxCurlyMin = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.textBoxWeight = new System.Windows.Forms.TextBox();
+            this.textBoxDeviation = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.textBoxFall = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.textBoxPlasticity = new System.Windows.Forms.TextBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // textBoxCurlyMin
-            // 
-            textBoxCurlyMin.Location = new System.Drawing.Point(824, 387);
-            textBoxCurlyMin.Name = "textBoxCurlyMin";
-            textBoxCurlyMin.Size = new System.Drawing.Size(48, 20);
-            textBoxCurlyMin.TabIndex = 6;
-            textBoxCurlyMin.Text = "30";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Location = new System.Drawing.Point(33, 30);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(450, 621);
+            this.pictureBox1.Size = new System.Drawing.Size(449, 621);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -243,7 +246,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(758, 390);
+            this.label11.Location = new System.Drawing.Point(759, 367);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(47, 13);
             this.label11.TabIndex = 7;
@@ -252,7 +255,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(878, 390);
+            this.label12.Location = new System.Drawing.Point(879, 367);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(15, 13);
             this.label12.TabIndex = 16;
@@ -287,7 +290,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(878, 300);
+            this.label15.Location = new System.Drawing.Point(879, 186);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(15, 13);
             this.label15.TabIndex = 23;
@@ -296,7 +299,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(758, 300);
+            this.label16.Location = new System.Drawing.Point(759, 186);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(48, 13);
             this.label16.TabIndex = 22;
@@ -304,7 +307,7 @@
             // 
             // textBoxSlimness
             // 
-            this.textBoxSlimness.Location = new System.Drawing.Point(824, 297);
+            this.textBoxSlimness.Location = new System.Drawing.Point(825, 183);
             this.textBoxSlimness.Name = "textBoxSlimness";
             this.textBoxSlimness.Size = new System.Drawing.Size(48, 20);
             this.textBoxSlimness.TabIndex = 21;
@@ -383,7 +386,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(878, 353);
+            this.label21.Location = new System.Drawing.Point(879, 393);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(15, 13);
             this.label21.TabIndex = 33;
@@ -392,7 +395,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(758, 353);
+            this.label22.Location = new System.Drawing.Point(759, 393);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(50, 13);
             this.label22.TabIndex = 32;
@@ -400,16 +403,16 @@
             // 
             // textBoxCurlyMax
             // 
-            this.textBoxCurlyMax.Location = new System.Drawing.Point(824, 350);
+            this.textBoxCurlyMax.Location = new System.Drawing.Point(825, 390);
             this.textBoxCurlyMax.Name = "textBoxCurlyMax";
             this.textBoxCurlyMax.Size = new System.Drawing.Size(48, 20);
             this.textBoxCurlyMax.TabIndex = 31;
-            this.textBoxCurlyMax.Text = "30";
+            this.textBoxCurlyMax.Text = "50";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(878, 106);
+            this.label23.Location = new System.Drawing.Point(879, 107);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(18, 13);
             this.label23.TabIndex = 36;
@@ -418,7 +421,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(751, 106);
+            this.label24.Location = new System.Drawing.Point(752, 107);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(67, 13);
             this.label24.TabIndex = 35;
@@ -426,24 +429,24 @@
             // 
             // textBoxStepMaxLen
             // 
-            this.textBoxStepMaxLen.Location = new System.Drawing.Point(824, 103);
+            this.textBoxStepMaxLen.Location = new System.Drawing.Point(825, 104);
             this.textBoxStepMaxLen.Name = "textBoxStepMaxLen";
             this.textBoxStepMaxLen.Size = new System.Drawing.Size(48, 20);
             this.textBoxStepMaxLen.TabIndex = 34;
-            this.textBoxStepMaxLen.Text = "2";
+            this.textBoxStepMaxLen.Text = "30";
             // 
             // textBoxStepMinLen
             // 
-            this.textBoxStepMinLen.Location = new System.Drawing.Point(824, 129);
+            this.textBoxStepMinLen.Location = new System.Drawing.Point(825, 130);
             this.textBoxStepMinLen.Name = "textBoxStepMinLen";
             this.textBoxStepMinLen.Size = new System.Drawing.Size(48, 20);
             this.textBoxStepMinLen.TabIndex = 34;
-            this.textBoxStepMinLen.Text = "2";
+            this.textBoxStepMinLen.Text = "20";
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(751, 132);
+            this.label25.Location = new System.Drawing.Point(752, 133);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(64, 13);
             this.label25.TabIndex = 35;
@@ -452,11 +455,123 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(878, 132);
+            this.label26.Location = new System.Drawing.Point(879, 133);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(18, 13);
             this.label26.TabIndex = 36;
             this.label26.Text = "px";
+            // 
+            // textBoxCurlyMin
+            // 
+            this.textBoxCurlyMin.Location = new System.Drawing.Point(825, 364);
+            this.textBoxCurlyMin.Name = "textBoxCurlyMin";
+            this.textBoxCurlyMin.Size = new System.Drawing.Size(48, 20);
+            this.textBoxCurlyMin.TabIndex = 31;
+            this.textBoxCurlyMin.Text = "10";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(759, 341);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(52, 13);
+            this.label27.TabIndex = 7;
+            this.label27.Text = "Deviation";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(879, 341);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(15, 13);
+            this.label28.TabIndex = 16;
+            this.label28.Text = "%";
+            // 
+            // textBoxWeight
+            // 
+            this.textBoxWeight.Location = new System.Drawing.Point(825, 242);
+            this.textBoxWeight.Name = "textBoxWeight";
+            this.textBoxWeight.Size = new System.Drawing.Size(48, 20);
+            this.textBoxWeight.TabIndex = 31;
+            this.textBoxWeight.Text = "20";
+            // 
+            // textBoxDeviation
+            // 
+            this.textBoxDeviation.Location = new System.Drawing.Point(825, 338);
+            this.textBoxDeviation.Name = "textBoxDeviation";
+            this.textBoxDeviation.Size = new System.Drawing.Size(48, 20);
+            this.textBoxDeviation.TabIndex = 31;
+            this.textBoxDeviation.Text = "10";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(759, 245);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(41, 13);
+            this.label29.TabIndex = 32;
+            this.label29.Text = "Weight";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(879, 245);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(15, 13);
+            this.label30.TabIndex = 33;
+            this.label30.Text = "%";
+            // 
+            // textBoxFall
+            // 
+            this.textBoxFall.Location = new System.Drawing.Point(825, 268);
+            this.textBoxFall.Name = "textBoxFall";
+            this.textBoxFall.Size = new System.Drawing.Size(48, 20);
+            this.textBoxFall.TabIndex = 31;
+            this.textBoxFall.Text = "2";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(759, 271);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(23, 13);
+            this.label31.TabIndex = 32;
+            this.label31.Text = "Fall";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(879, 271);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(15, 13);
+            this.label32.TabIndex = 33;
+            this.label32.Text = "%";
+            // 
+            // textBoxPlasticity
+            // 
+            this.textBoxPlasticity.Location = new System.Drawing.Point(825, 294);
+            this.textBoxPlasticity.Name = "textBoxPlasticity";
+            this.textBoxPlasticity.Size = new System.Drawing.Size(48, 20);
+            this.textBoxPlasticity.TabIndex = 31;
+            this.textBoxPlasticity.Text = "8";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(759, 297);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(48, 13);
+            this.label33.TabIndex = 32;
+            this.label33.Text = "Plasticity";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(879, 297);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(15, 13);
+            this.label34.TabIndex = 33;
+            this.label34.Text = "%";
             // 
             // Form1
             // 
@@ -469,8 +584,19 @@
             this.Controls.Add(this.label24);
             this.Controls.Add(this.textBoxStepMinLen);
             this.Controls.Add(this.textBoxStepMaxLen);
+            this.Controls.Add(this.label34);
+            this.Controls.Add(this.label32);
+            this.Controls.Add(this.label30);
             this.Controls.Add(this.label21);
+            this.Controls.Add(this.label33);
+            this.Controls.Add(this.label31);
+            this.Controls.Add(this.label29);
             this.Controls.Add(this.label22);
+            this.Controls.Add(this.textBoxDeviation);
+            this.Controls.Add(this.textBoxCurlyMin);
+            this.Controls.Add(this.textBoxPlasticity);
+            this.Controls.Add(this.textBoxFall);
+            this.Controls.Add(this.textBoxWeight);
             this.Controls.Add(this.textBoxCurlyMax);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label19);
@@ -485,6 +611,7 @@
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.textBoxFade);
+            this.Controls.Add(this.label28);
             this.Controls.Add(this.richTextBoxLogs);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label10);
@@ -495,10 +622,10 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxVegetation);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label27);
             this.Controls.Add(this.textBoxYouth);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label3);
-            this.Controls.Add(textBoxCurlyMin);
             this.Controls.Add(this.textBoxDyingOff);
             this.Controls.Add(this.buttonTick);
             this.Controls.Add(this.buttonGenerate);
@@ -560,6 +687,19 @@
         private System.Windows.Forms.TextBox textBoxStepMinLen;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox textBoxCurlyMin;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox textBoxWeight;
+        private System.Windows.Forms.TextBox textBoxDeviation;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox textBoxFall;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.TextBox textBoxPlasticity;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
     }
 }
 
