@@ -37,6 +37,7 @@ namespace TomatoGrowth
                 {
                     visual = new PP_visual
                     {
+                        TickPerClick = GetFromTextBox<int>(textBoxTickPerClick),
                         StepX = GetFromTextBox<int>(textBoxStepX),
                         StepY = GetFromTextBox<int>(textBoxStepY)
                     },
@@ -122,6 +123,15 @@ namespace TomatoGrowth
             }
         }
 
+        private void buttonRun_Click(object sender, EventArgs e)
+        {
+
+            for (int i = 0; i < Plant.Gens.visual.TickPerClick; i++)
+            {
+                currentPlant.tickPlant();
+                currentPlant.drowPlant();
+            }
+        }
 
     }
     public struct PlantParams
@@ -135,10 +145,10 @@ namespace TomatoGrowth
     }       
     public struct PP_visual
     {
-        public int StepX, StepY;
+        public int StepX, StepY, TickPerClick;
         public override string ToString()
         {
-            return $"StepX: {StepX}, StepY: {StepY}";
+            return $"StepX: {StepX}, StepY: {StepY}, TickPerClick:{TickPerClick}";
         }
     } 
     public struct PP_growing
@@ -152,7 +162,7 @@ namespace TomatoGrowth
                    $"StepMaxLen: {StepMaxLen},\n StepMinLen: {StepMinLen},\n - \n " +
                    $"Bushiness: {Bushiness:F2},\n Vegetation: {Vegetation:F2},\n Slimness: {Slimness:F2},\n " +
                    $"Fade: {Fade:F2},\n CurlyMin: {CurlyMin:F2},\n CurlyMax: {CurlyMax:F2}, \n " +
-                   $"Weight: {Weight:F2},\n Fall: {Fall:F2},\n Plasticity: {Plasticity:F2},\n Deviation: {Deviation:F2}";
+                   $"Weight: {Weight:F2},\n Fall: {Fall:F3},\n Plasticity: {Plasticity:F2},\n Deviation: {Deviation:F2}";
         }
     }
     public interface InputOutputStream

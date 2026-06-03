@@ -28,6 +28,7 @@ namespace TomatoGrowth
         public static PlantTag tag_none         ;
         public static PlantTag tag_active       ;
         public static PlantTag tag_passive      ;
+        public static PlantTag tag_faded        ;
         public static PlantTag tag_dead         ;
         public static PlantTag tag_original     ;
         public static PlantTag tag_fallen       ;
@@ -58,7 +59,9 @@ namespace TomatoGrowth
             tag_none        = new PlantTag("none");
             tag_active      = new PlantTag("active");
             tag_passive     = new PlantTag("passive");
+            tag_faded       = new PlantTag("faded");
             tag_dead        = new PlantTag("dead");
+
             tag_original    = new PlantTag("original");
             tag_fallen      = new PlantTag("fallen");
             tag_supported   = new PlantTag("supported");
@@ -70,6 +73,7 @@ namespace TomatoGrowth
             phase.Add(tag_none   );
             phase.Add(tag_active );
             phase.Add(tag_passive);
+            phase.Add(tag_faded  );
             phase.Add(tag_dead   );
 
             position = new PlantTagGroup("position");
@@ -114,7 +118,7 @@ namespace TomatoGrowth
             {
                 g.Clear(Color.White);
             }
-            root.drow(new Vec2d(200, 500));
+            root.drow(new Vec2d(Gens.visual.StepX, Gens.visual.StepY));
             thisPictureBox.Image = bmp;
         }
 
@@ -154,8 +158,6 @@ namespace TomatoGrowth
             myTags = new PlantTagManager();
             myTags.Add(tag_none);
             end = new Vec2d(parent_end);
-
-
         }
 
         public void born(string ID)
@@ -244,7 +246,7 @@ namespace TomatoGrowth
 
             if (! myTags.Contains(tag_none))
             {
-                DrawLine(parentDot, myDot, myTags.Contains(tag_active) ? 0 : (myTags.Contains(tag_passive) ? 1 : 2), Math.Sqrt(old));
+                DrawLine(parentDot, myDot, myTags.Contains(tag_active) ? 0 : ((myTags.Contains(tag_passive) || myTags.Contains(tag_faded)) ? 1 : 2), Math.Sqrt(old));
 
                 if (mainKid != null)
                     mainKid.drow(myDot);
@@ -265,11 +267,14 @@ namespace TomatoGrowth
             len++;
             old++;
 
-            if (old == Gens.gr.Youth)
-                myTags.Switch(tag_active, phase);
+            if (!myTags.Contains(tag_dead))
+            {
+                if (old == Gens.gr.Youth)
+                    myTags.Switch(tag_passive, phase);
 
-            if (old == Gens.gr.DyingOff)
-                myTags.Switch(tag_passive, phase);
+                if (old == Gens.gr.DyingOff)
+                    myTags.Switch(tag_faded, phase);
+            }
 
 
             if (len == Gens.gr.MaxLen)
@@ -311,7 +316,7 @@ namespace TomatoGrowth
                     }
                 }
 
-                if (myTags.Contains(tag_passive))
+                if (myTags.Contains(tag_passive) || myTags.Contains(tag_faded))
                 {
                     if (mainKid != null)
                         mainKid.oneTick(len);
@@ -321,6 +326,7 @@ namespace TomatoGrowth
                         foreach (var kid in kids)
                             kid.oneTick(len);
 
+                        if (myTags.Contains(tag_faded))
                         foreach (var kid in kids)
                             if (RandomChance(Gens.gr.Fade))
                                 kid.die();
